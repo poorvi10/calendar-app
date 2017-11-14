@@ -2,38 +2,13 @@
 var myApp = angular.module('myApp', []);
 
 // Defining wrapper Routes for our API
-myApp.controller('appCtrl', function appCtrl($scope, $http) {
-	$scope.formData = {};
-
-	$http.get('/models')
-		.success(function(data) { 
-			$scope.models = data;
-			console.log(data);
-		})
-		.error(function(data) {
-			console.log("Error: " + data);
-		});
-
-	$scope.createModel = function() {
-		$http.post('/models', $scope.formData)
-			.success(function(data) {
-				$scope.formData = {};
-				$scope.models = data;
-				console.log(data);
-			})
-			.error(function(data) {
-				console.log("Error: " + data);
-			});
-	};
-
-	$scope.deleteModel = function(id) {
-		$http.delete('/models/' + id)
-			.success(function(data) {
-				$scope.models = data;
-				console.log(data);
-			})
-			.error(function(data) {
-				console.log("Error: " + data);
-			});
-	};
+myApp.controller('appCtrl', function ($scope) {
+	$scope.$on('event:google-plus-signin-success', function (event, authResult) {
+		// User successfully authorized the G+ App!
+		console.log('Signed in!');
+	});
+	$scope.$on('event:google-plus-signin-failure', function (event, authResult) {
+		// User has not authorized the G+ App!
+		console.log('Not signed into Google Plus.');
+	});
 });
