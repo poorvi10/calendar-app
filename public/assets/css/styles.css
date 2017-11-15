@@ -7,18 +7,16 @@
 }
 
 #googlebutton{
-    width: 120px;
+    width: 180px;
     height: 36px;    
     color: #FFFFFF;
-    border-bottom: solid 2px #02336d;
-    background: #225FCD;
-    
+    background: rgb(208,66,42);
+    margin-top: 3%;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 #googlebutton:hover,
 #googlebutton:focus{
-   border-bottom: solid 2px #04538d;
    background: #427FED;
    cursor: pointer;
 }
@@ -32,7 +30,7 @@
 #googlebutton .sign-in-text{
     text-align: center;
     vertical-align: middle;
-    margin: 3px 0 0 0;
+    margin: 6px 0 0 0;
     float: left;
-    width: 90px;
+    padding-left: 13px;
 }

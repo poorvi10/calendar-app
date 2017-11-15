@@ -1,12 +1,22 @@
 // Export the controller
-var app = angular.module('calendar-app',[]);
+var app = angular.module('calendar-app',["ngRoute"]).config(configApp);
+
+configApp.$inject = ['$routeProvider', '$locationProvider'];
+function configApp($routeProvider, $locationProvider) {
+	$routeProvider
+	.when('/home', {
+		templateUrl: 'home.html',
+		controller: 'HomeController'
+	});
+	$locationProvider.html5Mode(true);
+}
 
 // Defining wrapper Routes for our API
 app.controller('index-controller', function ($scope, $http, $timeout, $location, $window) {
+
 	$scope.signin = {
 		username: "",
-		email: "",
-		g_image: ""
+		email: ""
 	}
 
 	$scope.onGoogleLogin = function() {
@@ -27,10 +37,12 @@ app.controller('index-controller', function ($scope, $http, $timeout, $location,
 							$scope.g_image  = resp.image.url;
 							$http.post('/login', {'username':$scope.signin.username,
 								'email':$scope.signin.email})
-							.success(function(data) {
-								console.log(data);
+							.then(function(data) {
+								//$location.path('/home').search({username:data.data.username, email:data.data.email});
+								document.getElementById('googlebutton').style.display = 'none';
+								document.getElementById('authorize-button').style.display = 'block';
 							})
-							.error(function(data) {
+							.catch(function(data) {
 								console.log(data);
 							});
 						});
