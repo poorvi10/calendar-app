@@ -5,10 +5,12 @@
 	"main": "server.js",
 	"author": "Poorvi Dubey",
 	"dependencies": {
-		"express": "latest",
+		"angular-ui-calendar": "^1.0.2",
 		"body-parser": "latest",
-		"morgan": "latest",
+		"express": "latest",
+		"fullcalendar": "^3.7.0",
 		"mongoose": "latest",
+		"morgan": "latest",
 		"request": "latest"
 	},
 	"repository": {

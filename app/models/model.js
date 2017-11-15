@@ -7,9 +7,12 @@ Schema = mongoose.Schema;
 
 // Model Schema
 var ModelSchema = new Schema ({
-	name : {
+	username : {
 		type: String
 	},
+	email : {
+		type: String
+	}
 });
 
-module.exports = mongoose.model('Model', ModelSchema);
+module.exports = mongoose.model('User', ModelSchema);

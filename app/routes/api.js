@@ -4,43 +4,26 @@ module.exports = function(app) {
 		Model = require('../models/model')
 
 	// Example API route
-	app.get('/models', function(req, res) {
+	app.post('/login', function(req, res) {
 
-		// Checks the model collection and returns all of them`
-		Model.find(function(err, models) {
-
-			// returns all people in JSON format
-			res.send(models);
-		});
-	});
-
-	// Example POST route
-	app.post('/models', function (req, res) {
-		Model.create({
-			name : req.body.name // Bound using Angular
-		}, function(err, model) {
-			if(err) {
-				res.send(err);
+		var isExists = Model.find({
+			email : req.body.email // Bound using Angular
+		}, function (err, users) {
+			if (users.length != 0) {
+				res.send({"username": users[0].username, "email":users[0].email});
+			} else {
+				Model.create({
+					username: req.body.username,
+					email : req.body.email
+				},
+				function(err, model) {
+					if(err) {
+						res.send("Please try again!");
+					}
+					res.send("You are logged In!");
+				}
+			);
 			}
-
-			Model.find(function(err, models) {
-				res.send(models);
-			});
-		});
-	});
-
-	// Example DELETE route
-	app.delete('/models/:model_id', function (req, res) {
-		Model.remove({
-			_id: req.params.model_id
-		}, function(err, model) {
-			if(err) {
-				res.send(err);
-			}
-
-			Model.find(function(err, models) {
-				res.send(models);
-			});
 		});
 	});
 }
