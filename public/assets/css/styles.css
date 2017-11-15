@@ -34,3 +34,8 @@
     float: left;
     padding-left: 13px;
 }
+
+#authorize-button, #signout-button {
+    background-color: #fff;
+    border-radius: 0px !important;
+}

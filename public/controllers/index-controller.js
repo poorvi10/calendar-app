@@ -41,6 +41,7 @@ app.controller('index-controller', function ($scope, $http, $timeout, $location,
 								//$location.path('/home').search({username:data.data.username, email:data.data.email});
 								document.getElementById('googlebutton').style.display = 'none';
 								document.getElementById('authorize-button').style.display = 'block';
+								document.getElementById('greeting').style.display = 'block';
 							})
 							.catch(function(data) {
 								console.log(data);
