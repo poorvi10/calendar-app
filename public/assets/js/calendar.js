@@ -73,8 +73,10 @@ function handleSignoutClick(event) {
     gapi.auth2.getAuthInstance().signOut();
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'none';
+    document.getElementById("content").innerHTML = "";
     document.getElementById('content').style.display = 'none';
     document.getElementById('greeting').style.display = 'none';
+    document.getElementById('calendar').style.display = 'none';
     document.getElementById('googlebutton').style.display = 'block';
 }
 
@@ -84,10 +86,21 @@ function handleSignoutClick(event) {
  *
  * @param {string} message Text to be placed in pre element.
  */
-function appendPre(message) {
+function appendPre(events) {
     var pre = document.getElementById('content');
-    var textContent = document.createTextNode(message + '\n');
-    pre.appendChild(textContent);
+    document.getElementById('calendar').style.display = 'BLOCK';
+    for (i = 0; i < events.length; i++) {
+        var event = events[i];
+        var x = document.createElement("INPUT");
+        x.setAttribute("type", "hidden");
+        x.setAttribute("value", event.summary);
+        var when = event.start.dateTime;
+        if (!when) {
+            when = event.start.date;
+        }
+        x.setAttribute("name", when);
+        pre.appendChild(x);
+    }
 }
 
 /**
@@ -105,19 +118,6 @@ function listUpcomingEvents() {
         'orderBy': 'startTime'
     }).then(function(response) {
         var events = response.result.items;
-        appendPre('Upcoming events:');
-        if (events.length > 0) {
-            for (i = 0; i < events.length; i++) {
-                var event = events[i];
-                var when = event.start.dateTime;
-                if (!when) {
-                    when = event.start.date;
-                }
-                appendPre(event.summary + ' (' + when + ')')
-            }
-            
-        } else {
-            appendPre('No upcoming events found.');
-        }
+        appendPre(events);
     });
 }

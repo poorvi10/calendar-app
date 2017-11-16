@@ -10,6 +10,7 @@
 		"body-parser": "latest",
 		"express": "latest",
 		"fullcalendar": "^3.7.0",
+		"gulp": "^3.9.1",
 		"mongoose": "latest",
 		"morgan": "latest",
 		"request": "latest"

@@ -19,6 +19,8 @@ app.controller('index-controller', function ($scope, $http, $timeout, $location,
 		email: ""
 	}
 
+	document.getElementById("content").innerHTML = ""; 
+	
 	$scope.onGoogleLogin = function() {
 		var params = {
 			"clientid": "1078031504858-hkj464s7kmq3kbku9bn1pjcteehatkui.apps.googleusercontent.com",
