@@ -11,7 +11,9 @@ var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
 
 var authorizeButton = document.getElementById('authorize-button');
 var signoutButton = document.getElementById('signout-button');
-var events = document.getElementById('content');
+var signinButton = document.getElementById('googlebutton');
+var fullcalendar = document.getElementById('calendar');
+var eventsArray = document.getElementById('eventsArray');
 authorizeButton.style.display = 'none';
 
 /**
@@ -50,12 +52,14 @@ function updateSigninStatus(isSignedIn) {
     if (isSignedIn) {
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
-        events.style.display = 'block';
+        signinButton.style.display = 'none';
+        fullcalendar.style.display = 'block';
+        document.getElementById('greeting').style.display = 'block';        
+        
         listUpcomingEvents();
     } else {
-    // authorizeButton.style.display = 'block';
         signoutButton.style.display = 'none';
-        events.style.display = 'none';
+        signinButton.style.display = 'block';
     }
 }
 
@@ -73,51 +77,37 @@ function handleSignoutClick(event) {
     gapi.auth2.getAuthInstance().signOut();
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'none';
-    document.getElementById("content").innerHTML = "";
-    document.getElementById('content').style.display = 'none';
     document.getElementById('greeting').style.display = 'none';
-    document.getElementById('calendar').style.display = 'none';
-    document.getElementById('googlebutton').style.display = 'block';
+    fullcalendar.style.display = 'none';
+    signinButton.style.display = 'block';
 }
 
-/**
- * Append a pre element to the body containing the given message
- * as its text node. Used to display the results of the API call.
- *
- * @param {string} message Text to be placed in pre element.
- */
-function appendPre(events) {
-    var pre = document.getElementById('content');
-    document.getElementById('calendar').style.display = 'BLOCK';
-    for (i = 0; i < events.length; i++) {
-        var event = events[i];
-        var x = document.createElement("INPUT");
-        x.setAttribute("type", "hidden");
-        x.setAttribute("value", event.summary);
-        var when = event.start.dateTime;
-        if (!when) {
-            when = event.start.date;
-        }
-        x.setAttribute("name", when);
-        pre.appendChild(x);
-    }
-}
-
-/**
- * Print the summary and start datetime/date of the next ten events in
- * the authorized user's calendar. If no events are found an
- * appropriate message is printed.
- */
 function listUpcomingEvents() {
     gapi.client.calendar.events.list({
         'calendarId': 'primary',
-        // 'timeMin': (new Date()).toISOString(),
         'showDeleted': false,
         'singleEvents': true,
-    //  'maxResults': 10,
         'orderBy': 'startTime'
     }).then(function(response) {
         var events = response.result.items;
-        appendPre(events);
+        var eventsArr = [];
+        if (events.length > 0) {
+            for (i = 0; i < events.length; i++) {
+              var event = events[i];
+              var when = event.start.dateTime;
+              if (!when) {
+                when = event.start.date;
+              }
+              var id = event.id;
+              var message = event.summary;
+              var eventObject = {
+                  'id': id,
+                  'title': message,
+                  'start': when
+                }
+              eventsArr.push(eventObject);
+            }
+          }
+        eventsArray.innerHTML = JSON.stringify(eventsArr);
     });
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html  ng-app="calendar-app">
 <head>
-	  <title>Calendar App</title>
+	<title>Calendar App</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/styles.css">
 
@@ -32,7 +32,7 @@
             </div>
             <div class="sign-in-text">Sign in with Google</div>
         </div>
-        <h1 id="greeting">{{signin.username}}</h1>
+        <h1 id="greeting" style="display: none;">Hello {{signin.username}}! Get your google calendar events here!</h1>
     
         <script src="../assets/js/app.js"></script>
         <script type="text/javascript">
@@ -50,42 +50,33 @@
         <button id="authorize-button" style="display: none;">Get Google Calendar Events</button>
         <button id="signout-button" style="display: none;">Sign Out</button>
     
-        <pre id="content">
-            <script>
-                document.getElementById('calendar').style.display = 'none';
-                setInterval(function () {
-                        var panel= $("#content");
-                        var events = [];
-                        var inputs = panel.find("input").each(function(){
-                            var date = $(this).attr('name');
-                            var summary = $(this).attr('value');
-                            obj = {
-                                title: summary,
-                                start: date
-                            };
-                            events.push(obj);
-                        });
-                        if (events) {
-                            $('#calendar').fullCalendar({
-                                header: {
-                                    left: 'prev,next today',
-                                    center: 'title',
-                                    right: 'month,basicWeek,basicDay'
-                                },
-                                defaultDate: '2017-11-12',
-                                navLinks: true, // can click day/week names to navigate views
-                                editable: true,
-                                eventLimit: true, // allow "more" link when too many events
-                                events: events
-                            });
-                        }
-                    }
-                    
-                , 5000);
-            </script>
-        </pre>
+        <div id="eventsArray" style="display:none;"></div>
         <div id="calendar"></div>
-    
+
+        <script>
+            document.getElementById('calendar').style.display = 'none';
+            setInterval(function () {
+                    var panel= $("#content");
+                    var events = JSON.parse(document.getElementById('eventsArray').innerHTML);
+                    if (events) {
+                        $('#calendar').fullCalendar({
+                            header: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'month,basicWeek,basicDay'
+                            },
+                            defaultDate: '2017-11-12',
+                            navLinks: true, 
+                            editable: true,
+                            eventLimit: true, 
+                            events: events
+                        });
+                    }
+                }
+                
+            , 2000);
+        </script>
+        
         <script type="text/javascript" src="../assets/js/calendar.js"></script>
         <script async defer src="https://apis.google.com/js/api.js"
           onload="this.onload=function(){};handleClientLoad()"
